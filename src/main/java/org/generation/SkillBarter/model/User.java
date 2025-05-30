@@ -15,7 +15,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private String fullName;
+    private String firstName;
+    private String lastName;
     @Column(name = "email",unique = true,nullable = false)
     private String email;
     @Column(nullable = false)
@@ -24,14 +25,19 @@ public class User {
     private String bio;
     private String address;
     @Column(name = "date_of_join", nullable = false)
-    private LocalDate dateOfJoin = LocalDate.now();
+    private LocalDate dateOfJoin;
     private String imageUrl;
+    @PrePersist     //ensures it is always set correctly at the time of saving
+    protected void onCreate(){
+        this.dateOfJoin=LocalDate.now();
+    }
 
     public User() {
     }
 
-    public User(String fullName, String email, String password, String bio, String address,String imageUrl) {
-        this.fullName = fullName;
+    public User(String firstName, String lastName,String email, String password, String bio, String address, String imageUrl) {
+        this.firstName = firstName;
+        this.lastName= lastName;
         this.email = email;
         this.password = password;
         this.bio = bio;

@@ -1,7 +1,7 @@
-package org.generation.SkillBarter.repositories;
-
-import org.generation.SkillBarter.model.Schedule;
-import org.springframework.data.jpa.repository.JpaRepository;
-
-public interface ScheduleRepository extends JpaRepository<Schedule,Long> {
-}
+//package org.generation.SkillBarter.repositories;
+//
+//import org.generation.SkillBarter.model.Schedule;
+//import org.springframework.data.jpa.repository.JpaRepository;
+//
+//public interface ScheduleRepository extends JpaRepository<Schedule,Long> {
+//}
