@@ -1,4 +1,4 @@
-package org.generation.SkillBarter.model;
+package org.generation.SkillBarter.enums;
 
 public enum SessionFormat {
     ONLINE,

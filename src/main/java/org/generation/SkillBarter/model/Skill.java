@@ -1,9 +1,11 @@
-package org.generation.SkillBarter.enums;
+package org.generation.SkillBarter.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.generation.SkillBarter.model.User;
+import org.generation.SkillBarter.enums.Category;
+import org.generation.SkillBarter.enums.SessionFormat;
+import org.generation.SkillBarter.enums.SkillLevel;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,6 +24,7 @@ public class Skill {
     private String description;
     @Enumerated(EnumType.STRING)//BUSINESS,TECHNOLOGY,LANGUAGE,PERSONAL_GROWTH,OTHER
     private Category category;
+    @Column(name = "tags")// save as comma - separated string
     private List<String> tags;
     private String intent;//(teach or learn)
     @Enumerated(EnumType.STRING)//("BEGINNER","INTERMEDIATE","EXPERT")
@@ -34,6 +37,8 @@ public class Skill {
     private SessionFormat sessionFormat;//ONLINE,OFFLINE,BOTH
     private LocalDate postedDate;
 
+
+
     @ManyToOne
     @JoinColumn(name = "user_id")//relationship represent user can have many skill
     private User user;
@@ -43,6 +48,10 @@ public class Skill {
         this.postedDate=LocalDate.now();
     }
 
+
+    public void setSetSkillLevel(SkillLevel skillLevel) {
+        this.level = skillLevel;
+    }
 
     public Skill() {
     }
