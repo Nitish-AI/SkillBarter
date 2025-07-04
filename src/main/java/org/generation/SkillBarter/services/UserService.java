@@ -1,7 +1,10 @@
 package org.generation.SkillBarter.services;
 
+import org.generation.SkillBarter.dto.UserProfile;
+import org.generation.SkillBarter.dto.UserProfileUpdate;
 import org.generation.SkillBarter.model.User;
 import org.generation.SkillBarter.repositories.UserRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,18 +16,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-//    public void saveUser(String firstName,
-//                         String lastName,
-//                         String email,
-//                         String password,
-//                         String bio,
-//                         String address,
-//                         String image){
-//        User user=new User(firstName,lastName,email,password,bio,address,image);
-//        userRepository.save(user);
-//    }
-    public User registerUser(User user){
-        if(userRepository.existsByEmail(user.getEmail())){
+    public User registerUser(@NotNull User user){
+        if(userRepository.existsByEmail(user.getEmail())){          //post the all information of user to database
             throw new RuntimeException("Email already registered.");
         }
         user.setDateOfJoin(LocalDate.now());
@@ -37,17 +30,43 @@ public class UserService {
         }
         return user;
     }
+    public UserProfile getUserProfile(Long userId){
+        User user=userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not Found"));
+        return new UserProfile(
+                user.getFirstName(),                //Display this data of user on profile page
+                user.getLastName(),
+                user.getUserName(),
+                user.getBio(),
+                user.getAddress(),
+                user.getDateOfJoin(),
+                user.getImageUrl()
+        );
+    }
+    public UserProfile updateUserProfile(Long userId,UserProfileUpdate update){
+        User user=userRepository.findById(userId).orElseThrow(()-> new RuntimeException("User not Found"));
+        if(!user.getPassword().equals(update.getCurrentPassword())){
+            throw new RuntimeException("Incorrect Password");
+        }
+        user.setFirstName(update.getFirstName());            //this will verify the password and then user can edit the user details
+        user.setLastName(update.getLastName());
+        user.setUserName(update.getUserName());
+        user.setBio(update.getBio());
+        user.setAddress(update.getAddress());
+        user.setImageUrl(update.getImageUrl());
+        userRepository.save(user);
+
+        return new UserProfile(
+                user.getFirstName(),
+                user.getLastName(),
+                user.getUserName(),
+                user.getBio(),
+                user.getAddress(),
+                user.getDateOfJoin(),
+                user.getImageUrl()
+        );
+
+    }
 
 
-//
-//
-//    public boolean isEmailTaken(String email){
-//        return userRepository.existsByEmail(email);
-//    }
-//    public void registerUser(User user) {
-//        if (isEmailTaken(user.getEmail())) {
-//            throw new IllegalArgumentException("Email already registered.");
-//        }
-//        userRepository.save(user);
-//    }
+
 }

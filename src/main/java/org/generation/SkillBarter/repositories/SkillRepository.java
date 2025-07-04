@@ -12,4 +12,5 @@ public interface SkillRepository extends JpaRepository<Skill,Long> {
     List<Skill> findByCategory(Category category);
     List<Skill> findByUserId(Long userId);
     List<Skill> findByUserIdAndIntent(Long userId,String Intent);
+    List<Skill> findByIntent(String intent);
 }

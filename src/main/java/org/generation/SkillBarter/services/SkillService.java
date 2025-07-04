@@ -20,7 +20,7 @@ public class SkillService {
     private UserRepository userRepository;
 
     public Skill createSkill(Long userId, SkillRequest request){
-        User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("User not found"));
+        User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("User not found"));// post user skill
         Skill skill =new Skill();
         skill.setTitle(request.getTitle());
         skill.setDescription(request.getDescription());
@@ -36,6 +36,30 @@ public class SkillService {
         return skillRepository.save(skill);
     }
 
+    public List<SkillRequest> getAllSkillByUser(Long userId){
+        List<Skill> skills= skillRepository.findByUserId(userId);// fetch user skill all details by user id
+        if (skills == null || skills.isEmpty()){
+            throw new NoSuchElementException("No skills found for user ID: " + userId);
+        }
+        return skills.stream().map(skill->{
+            SkillRequest dto =new SkillRequest();
+            dto.setId(skill.getId());
+            dto.setTitle(skill.getTitle());
+            dto.setDescription(skill.getDescription());
+            dto.setCategory(skill.getCategory());
+            dto.setTags(Collections.singletonList(String.join(", ", skill.getTags())));
+            dto.setIntent(skill.getIntent());
+            dto.setPrerequisites(skill.getPrerequisites());
+            dto.setEquipment(skill.getEquipment());
+            dto.setSessionFormat(skill.getSessionFormat());
+            dto.setPostedDate(skill.getPostedDate());
+            dto.setSkillLevel(skill.getLevel());
+            dto.setPostedBy(skill.getUser().getUserName());
+            return dto;
+        }).toList();
+    }
+
+
     public List<Skill> getSkillByUserId(Long userId) {
         List<Skill> skills = skillRepository.findByUserId(userId);
         if (skills == null || skills.isEmpty()) {
@@ -43,12 +67,14 @@ public class SkillService {
         }
         return skills;
     }
+
     public List<Skill> getAllSkills() {     //fetch all posted skill
         return skillRepository.findAll();
     }
     public List<Skill> getSkillTeachByUser(Long userId){        //fetch skills by intent and userId
         return skillRepository.findByUserIdAndIntent(userId,"teach");
     }
+
 
 
 

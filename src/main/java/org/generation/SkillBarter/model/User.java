@@ -18,7 +18,7 @@ public class User {
     private String firstName;
     @Column(name = "user_name",unique = true, nullable = false)
     private String userName;
-    private String lastName;
+    private String lastName;    
     @Column(name = "email",unique = true,nullable = false)
     private String email;
     @Column(nullable = false)

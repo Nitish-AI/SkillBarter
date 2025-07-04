@@ -37,17 +37,14 @@ public class Skill {
     private SessionFormat sessionFormat;//ONLINE,OFFLINE,BOTH
     private LocalDate postedDate;
 
-
-
     @ManyToOne
-    @JoinColumn(name = "user_id")//relationship represent user can have many skill
+    @JoinColumn(name = "user_id")//relationship represent user can have many skill due to this bidirectional
     private User user;
 
     @PrePersist     //ensures it is always set correctly at the time of saving
     protected void onCreate(){
         this.postedDate=LocalDate.now();
     }
-
 
     public void setSetSkillLevel(SkillLevel skillLevel) {
         this.level = skillLevel;
