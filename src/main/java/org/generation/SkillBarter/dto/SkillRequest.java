@@ -1,5 +1,7 @@
 package org.generation.SkillBarter.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.generation.SkillBarter.enums.Category;
@@ -12,7 +14,10 @@ import java.util.List;
 @Setter
 public class SkillRequest {
     private Long id;
+    @NotBlank(message="Title is required")
+    @Size(min=3,max=100,message = "Title must be3-100 character")
     private String title;
+    @NotBlank(message="Description is required")
     private String description;
     private Category category;
     private List<String> tags;
